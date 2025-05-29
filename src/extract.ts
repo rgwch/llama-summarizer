@@ -1,11 +1,11 @@
 import fs from "fs/promises";
 
 const tika = "http://localhost:9998/tika"; // Apache Tika server URL
-const tikaExtensions = [".pdf", ".txt", ".html", ".xml", ".docx", ".xlsx", ".pptx", ".odt", ".rtf"];
+const tikaExtensions = [".pdf", ".html", ".xml", ".docx", ".xlsx", ".pptx", ".odt", ".rtf"];
 
 /**
  * Extract text contents from a number of file formats using apache Tika 
- * If no usable file type was found, try to interpret file contents as Plaintext
+ * If no suitable file type was found, try to interpret file contents as Plaintext
 */
 export async function extractTextFromFile(filename: string): Promise<string> {
 
