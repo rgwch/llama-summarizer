@@ -11,7 +11,9 @@ const llama = await getLlama();
 
 console.log(chalk.yellow("Resolving model file..."));
 const modelPath = await resolveModelFile(
-    "hf:mradermacher/DeepSeek-R1-Distill-Qwen-14B-GGUF:Q6_K",
+    "gemma3-27b-abliterated-dpo.i1-IQ3_XS.gguf",
+    // "hf:mradermacher/DeepSeek-R1-Distill-Qwen-14B-GGUF:Q6_K",
+
     modelsDirectory
 );
 
