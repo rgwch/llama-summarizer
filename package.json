@@ -2,7 +2,7 @@
   "name": "llama-analyzer",
   "private": true,
   "description": "A Node.js application that uses Llama.cpp to summarize text using different models.",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "main": "./dist/index.js",
   "type": "module",
   "engines": {
