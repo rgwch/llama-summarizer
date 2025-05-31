@@ -1,7 +1,7 @@
 import "dotenv/config"
 import { createServer, IncomingMessage, ServerResponse } from 'http'
 import { logger } from './logger'
-import { extractTextFromBuffer, extractTextFromFile } from "./extract"
+import { extractTextFromBlob, extractTextFromFile } from "./extract"
 import { getLlama, LlamaCompletion } from "node-llama-cpp"
 const port = process.env.PORT || 3336
 
@@ -12,8 +12,16 @@ createServer(async (req: IncomingMessage, res: ServerResponse) => {
             error(res, 400, 'Bad Request: ' + err.message)
         })
         if (body) {
-            const text = await extractTextFromBuffer(Buffer.from(body))
-            await processText(text, res)
+            // console.log(body)
+            const text = await extractTextFromBlob(body).catch(err => {
+                error(res, 400, 'Bad Request: ' + err.message)
+            })
+            if (text) {
+                logger.info(`Received ${method} request with text of size: ${Buffer.byteLength(text)} bytes`)
+                await processText(text, res).catch(err => {
+                    error(res, 500, 'Internal Server Error: ' + err.message)
+                })
+            }
         } else {
             error(res, 400, 'Bad Request: No body provided')
         }
@@ -75,25 +83,16 @@ async function processText(text: string, res: ServerResponse) {
         return
     }
 }
-function parseBody(req: IncomingMessage): Promise<any> {
+function parseBody(req: IncomingMessage): Promise<Buffer> {
     return new Promise((resolve, reject) => {
-        let body = ''
+        const chunks: Buffer[] = [];
         req.on('data', chunk => {
-            body += chunk.toString() // convert Buffer to string
-        })
-        req.on('end', async () => {
-            try {
-                if (req.headers['content-type']?.toLowerCase() == "application/json") {
-                    resolve(JSON.parse(body))
-                }
-                else {
-                    resolve(body) // resolve with the raw body if not JSON
-                }
-            } catch (err: any) {
-                logger.error(err.message)
-                reject(err)
-            }
-        })
-
+            chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
+        });
+        req.on('end', () => {
+            resolve(Buffer.concat(chunks));
+        });
+        req.on('error', reject);
     });
 }
+
