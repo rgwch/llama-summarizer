@@ -1,6 +1,6 @@
 import { fileURLToPath } from "url";
 import path from "path";
-import chalk from "chalk";
+import { logger } from "./logger";
 import { getLlama, LlamaChatSession, resolveModelFile } from "node-llama-cpp";
 import { extractTextFromFile } from "./extract"
 
@@ -9,7 +9,7 @@ const modelsDirectory = path.join(__dirname, "..", "models");
 
 const llama = await getLlama();
 
-console.log(chalk.yellow("Resolving model file..."));
+logger.debug("Resolving model file...");
 const modelPath = await resolveModelFile(
     "gemma3-27b-abliterated-dpo.i1-IQ3_XS.gguf",
     // "hf:mradermacher/DeepSeek-R1-Distill-Qwen-14B-GGUF:Q6_K",
@@ -17,10 +17,10 @@ const modelPath = await resolveModelFile(
     modelsDirectory
 );
 
-console.log(chalk.yellow("Loading model..."));
+logger.debug("Loading model...");
 const model = await llama.loadModel({ modelPath });
 
-console.log(chalk.yellow("Creating context..."));
+logger.debug("Creating context...");
 const context = await model.createContext({
     contextSize: { max: 16384 } // omit this for a longer context size, but increased memory usage
 });
@@ -28,7 +28,6 @@ const context = await model.createContext({
 const session = new LlamaChatSession({
     contextSequence: context.getSequence()
 });
-console.log();
 
 const filename = process.argv[2];
 if (filename) {
@@ -59,10 +58,8 @@ if (filename) {
             */
     });
     process.stdout.write("\n");
-    // console.log(chalk.yellow("Consolidated AI answer: ") + a1);
-    console.log();
 } else {
-    console.log(chalk.red("No file provided. Please provide a file path as an argument."));
-    console.log(chalk.red("Usage: node index.js <path-to-file>"));
+    logger.warning("No file provided. Please provide a file path as an argument.");
+    logger.warning("Usage: node index.js <path-to-file>");
 }
 
