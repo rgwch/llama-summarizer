@@ -45,3 +45,15 @@ Test POST endpoint:
 
 Warning: There is no security. This Servcie is intended only for local environments. Never make it accessible from outside.
 If you want run it as a service, I recommend using [pm2](https://pm2.keymetrics.io/)
+
+## Notes
+One interesting thing is: If you send the same document several times, you will get different answers every time. The reason is in the constant "temperature" in the call
+
+```typescript
+ const result = await completion.generateCompletion(text, {
+            maxTokens: 1500, // Adjust as needed
+            temperature: 0.4, // Adjust as needed
+            topP: 0.9, // Adjust as needed
+        });
+```
+The higher the "temperature" is, the more freedom the model has to generate its answer. The value should be between 0 and 1. 
