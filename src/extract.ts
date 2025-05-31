@@ -28,3 +28,17 @@ export async function extractTextFromFile(filename: string): Promise<string> {
     }
     return text;
 }
+
+export async function extractTextFromBuffer(buffer: Buffer): Promise<string> {
+    console.log("Extracting text from buffer using Apache Tika...");
+    const response = await fetch(tika, {
+        method: "PUT",
+        body: buffer
+    });
+    if (response.status !== 200) {
+        throw new Error("Error extracting text from PDF: " + response.statusText);
+    } else {
+        const text = await response.text();
+        return text
+    }
+}
