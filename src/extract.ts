@@ -1,6 +1,6 @@
 import fs from "fs/promises";
 
-const tika = "http://localhost:9998/tika"; // Apache Tika server URL
+const tika = process.env.TIKA_URL || "http://localhost:9998/tika"; // Apache Tika server URL
 const tikaExtensions = [".pdf", ".html", ".xml", ".docx", ".xlsx", ".pptx", ".odt", ".rtf"];
 
 /**

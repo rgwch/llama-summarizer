@@ -1,6 +1,8 @@
 {
     "compilerOptions": {
-        "lib": ["es2022"],
+        "lib": [
+            "es2022"
+        ],
         "module": "es2022",
         "target": "es2022",
         "esModuleInterop": true,
@@ -13,23 +15,24 @@
         "forceConsistentCasingInFileNames": true,
         "noFallthroughCasesInSwitch": true,
         "noUncheckedIndexedAccess": true,
-        "moduleDetection": "force",
+        "moduleDetection": "auto",
         "skipLibCheck": true,
         "moduleResolution": "node",
         "resolveJsonModule": false,
         "strictNullChecks": true,
         "isolatedModules": true,
         "noEmit": false,
+        "rootDir": "./src",
         "outDir": "./dist",
         "strict": true,
         "sourceMap": true,
         "composite": false,
         "declaration": true
     },
-    "files": [
-        "./src/index.ts"
-    ],
-    "include": [
-        "./src"
-    ]
+    // "files": [
+    //    "./src/index.ts"
+    //],
+    //"include": [
+    //    "./src"
+    //]
 }
