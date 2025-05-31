@@ -47,9 +47,10 @@ Warning: There is no security. This Servcie is intended only for local environme
 If you want run it as a service, I recommend using [pm2](https://pm2.keymetrics.io/)
 
 ## Notes
-One interesting thing is: If you send the same document several times, you will get different answers every time. The reason is in the constant "temperature" in the call
+One interesting thing is: If you send the same document several times, you will get different answers every time. The reason is in the property "temperature" in the call
 
 ```typescript
+ // src/server.ts 
  const result = await completion.generateCompletion(text, {
             maxTokens: 1500, // Adjust as needed
             temperature: 0.4, // Adjust as needed
