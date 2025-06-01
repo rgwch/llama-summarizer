@@ -72,6 +72,9 @@ async function processText(text: string, res: ServerResponse) {
             temperature: 0.4, // Adjust as needed
             topP: 0.9, // Adjust as needed
         });
+        completion.dispose();
+        context.dispose();
+        model.dispose();
         res.setHeader('Content-Type', 'text/plain; charset=utf-8')
         res.writeHead(200)
         res.end(result)
